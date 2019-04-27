@@ -51,9 +51,9 @@ contract ST20 is IERC20,IST20 {
 
     address public ContractOwner;
 
-    string public name;
-    string public symbol;
-    uint8 public decimals;
+    string public name = "Blockhack Coin";
+    string public symbol= "BHC";
+    uint8 public decimals = 0;
 
     constructor() public {
         ContractOwner = msg.sender;
@@ -69,6 +69,12 @@ contract ST20 is IERC20,IST20 {
     function balanceOf(address owner) public view returns (uint256) {
         return balances[owner];
     }
+
+    function isWhitelisted(address owner) public view returns (bool){
+        return whitelist[owner];
+    }
+
+
 
     /**
      * @dev Function to check the amount of tokens that an owner allowed to a spender.
@@ -86,6 +92,7 @@ contract ST20 is IERC20,IST20 {
      * @param value The amount to be transferred.
      */
     function transfer(address to, uint256 value) public returns (bool) {
+        require(balances[msg.sender]>=value);
         balances[msg.sender] -= value;
         balances[to] += value;
         return true;
